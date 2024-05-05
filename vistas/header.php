@@ -16,12 +16,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">CRUD</a>
+            <a class="navbar-brand">CRUD</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="index.php">Universidades</a></li>
-                <li class="active"><a href="index.php?m=index_carreras">Carreras</a></li>
+                <li class="active"><a href="index.php?m=index_carrera">Carreras</a></li>
                 <li class="active"><a href="index.php?m=add_universidad">Agregar universidad</a></li>
                 <li class="active"><a href="index.php?m=add_carrera">Agregar carrera</a></li>
             </ul>

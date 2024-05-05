@@ -4,27 +4,39 @@
         private $DB;
         private $carreras;
 
+        // Constructor de la clase 
         function __construct(){
             $this->DB=Database::connect();
         }
 
+        // Función para obtener todas las carreras
         function get(){
-            $sql= 'SELECT * FROM carreras ORDER BY id DESC';
-            $fila=$this->DB->query($sql);
-            $this->carreras=$fila;
-            return  $this->carreras;
+            $sql = 'SELECT carreras.*, universidades.nombre AS nombre_universidad 
+                    FROM carreras 
+                    LEFT JOIN universidades ON carreras.universidad_id = universidades.id 
+                    ORDER BY carreras.id DESC';
+            $result = $this->DB->query($sql);
+            $this->carreras = $result;
+            return $this->carreras;
         }
 
-        function create($data){
-
+        // Función para obtener todas las universidades
+        function get_universidades(){
+            $sql = 'SELECT * FROM universidades';
+            $result = $this->DB->query($sql);
+            return $result;
+        }
+        
+        // Función para crear una carrera
+        function create_carrera($data){
             $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql="INSERT INTO carreras(nombre, direccion, telefono) VALUES (?,?,?)";
+            $sql = "INSERT INTO carreras(nombre, universidad_id) VALUES(?,?)";
             $query = $this->DB->prepare($sql);
-            $query->execute(array($data['nombre'],$data['direccion'],$data['telefono']));
+            $query->execute(array($data['nombre'], $data['universidad'])); 
             Database::disconnect();       
         }
 
-
+        // Función para obtener una carrera por su id
         function get_id($id){
             $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "SELECT * FROM carreras where id = ?";
@@ -34,15 +46,17 @@
             return $data;
         }
 
+        // Función para actualizar una carrera 
         function update($data,$date){
             $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "UPDATE carreras  set  nombre =?, direccion=?, telefono=? WHERE id = ? ";
+            $sql = "UPDATE carreras  set  nombre =?, universidad_id=? where id=?";
             $q = $this->DB->prepare($sql);
-            $q->execute(array($data['nombre'],$data['direccion'],$data['telefono'], $date));
+            $q->execute(array($data['nombre'],$data['universidad'],$date));
             Database::disconnect();
 
         }
 
+        // Función para eliminar una carrera
         function delete($date){
             $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql="DELETE FROM carreras where id=?";
